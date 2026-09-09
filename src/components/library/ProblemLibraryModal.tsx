@@ -18,7 +18,6 @@ export function ProblemLibraryModal({ onClose }: ProblemLibraryModalProps) {
   const problems = getProblems();
 
   const documents = useAppStore((state) => state.documents);
-  const loadReferenceDiagram = useAppStore((state) => state.loadReferenceDiagram);
   const startPractice = useAppStore((state) => state.startPractice);
   const clearCanvas = useAppStore((state) => state.clearCanvas);
   const setActiveDocument = useAppStore((state) => state.setActiveDocument);
@@ -87,10 +86,6 @@ export function ProblemLibraryModal({ onClose }: ProblemLibraryModalProps) {
     if (e.target === e.currentTarget) {
       onClose();
     }
-  };
-
-  const handleLoadSolution = (problem: Problem) => {
-    loadReferenceDiagram(problem.id);
   };
 
   const executeStartPractice = (problem: Problem) => {
@@ -176,7 +171,6 @@ export function ProblemLibraryModal({ onClose }: ProblemLibraryModalProps) {
                 key={problem.id}
                 problem={problem}
                 onPractice={handlePractice}
-                onLoad={handleLoadSolution}
               />
             ))}
           </div>

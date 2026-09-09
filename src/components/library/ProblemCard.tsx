@@ -1,3 +1,4 @@
+import { History } from 'lucide-react';
 import { Problem } from '../../domain/types';
 import { useAppStore } from '../../store';
 import { getBestScore, getProblemAttempts } from '../../domain/practice/attempts';
@@ -5,10 +6,9 @@ import { getBestScore, getProblemAttempts } from '../../domain/practice/attempts
 interface ProblemCardProps {
   problem: Problem;
   onPractice?: (problem: Problem) => void;
-  onLoad?: (problem: Problem) => void;
 }
 
-export function ProblemCard({ problem, onPractice, onLoad }: ProblemCardProps) {
+export function ProblemCard({ problem, onPractice }: ProblemCardProps) {
   const allAttempts = useAppStore((state) => state.attempts);
   const openAttemptHistory = useAppStore((state) => state.openAttemptHistory);
   const attempts = getProblemAttempts(allAttempts, problem.id);
@@ -61,27 +61,14 @@ export function ProblemCard({ problem, onPractice, onLoad }: ProblemCardProps) {
       </ul>
 
       {/* Stats line (Monospace) */}
-      <div className="font-mono text-[12px] text-text-faint mb-2">
-        {problem.stats.classes} classes · {problem.stats.relationships} relationships
-      </div>
-
-      {/* Attempt History Line — rendered only if >= 1 attempt exists */}
-      {attempts.length > 0 && (
-        <div className="flex items-center justify-between text-[12px] py-1 px-2.5 mb-3 bg-surface-2 rounded-[6px] border border-border/60">
+      <div className="flex items-center justify-between font-mono text-[12px] text-text-faint mb-2">
+        <span>{problem.stats.classes} classes · {problem.stats.relationships} relationships</span>
+        {attempts.length > 0 && (
           <span className="text-text-muted">
-            <span className="font-medium text-text">{attempts.length}</span> attempt{attempts.length > 1 ? 's' : ''} · best score{' '}
-            <span className="font-mono font-semibold text-primary">{bestScore}</span>
+            Best: <span className="font-semibold text-primary">{bestScore}</span>
           </span>
-          <button
-            type="button"
-            onClick={() => openAttemptHistory(problem.id)}
-            data-testid={`view-history-btn-${problem.id}`}
-            className="text-primary hover:text-primary-hover font-medium hover:underline cursor-pointer"
-          >
-            View history
-          </button>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Actions Row */}
       <div className="flex items-center gap-3 mt-auto pt-2">
@@ -89,17 +76,23 @@ export function ProblemCard({ problem, onPractice, onLoad }: ProblemCardProps) {
           type="button"
           onClick={() => onPractice?.(problem)}
           data-testid={`practice-btn-${problem.id}`}
-          className="w-[30%] h-[38px] rounded-[8px] border border-border text-text text-[13px] font-medium hover:bg-surface-2 hover:border-border-strong transition-colors cursor-pointer"
+          className="flex-1 h-[38px] rounded-[8px] bg-primary text-primary-fg text-[13px] font-semibold hover:bg-primary-hover transition-colors flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
         >
           Practice
         </button>
         <button
           type="button"
-          onClick={() => onLoad?.(problem)}
-          data-testid={`load-solution-btn-${problem.id}`}
-          className="w-[70%] h-[38px] rounded-[8px] bg-primary text-primary-fg text-[13px] font-medium hover:bg-primary-hover transition-colors flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
+          onClick={() => openAttemptHistory(problem.id)}
+          data-testid={`view-history-btn-${problem.id}`}
+          className="flex-1 h-[38px] rounded-[8px] border border-border text-text text-[13px] font-medium hover:bg-surface-2 hover:border-border-strong transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
         >
-          Load solution &rarr;
+          <History size={15} className="text-text-muted" />
+          <span>View history</span>
+          {attempts.length > 0 && (
+            <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-surface-2 text-primary border border-border/60">
+              {attempts.length}
+            </span>
+          )}
         </button>
       </div>
     </div>

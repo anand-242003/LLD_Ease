@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Button from '../ui/Button';
 import Logo from '../ui/Logo';
-import { FolderKanban, Trash2, Trophy, Loader2, Menu, X } from 'lucide-react';
+import { FolderKanban, Trash2, Trophy, Loader2, Menu, X, Eye } from 'lucide-react';
 import { useAppStore } from '../../store';
 import { useActiveDocument } from '../../store/selectors';
 import { getProblem } from '../../domain/problems';
@@ -27,6 +27,7 @@ export function AppHeader({ onOpenProblems, onClear, onGoHome }: AppHeaderProps)
   const setActiveModal = useAppStore((state) => state.setActiveModal);
   const setEvaluationResult = useAppStore((state) => state.setEvaluationResult);
   const clearCanvas = useAppStore((state) => state.clearCanvas);
+  const loadReferenceDiagram = useAppStore((state) => state.loadReferenceDiagram);
 
   const [isScoring, setIsScoring] = useState(false);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
@@ -42,6 +43,12 @@ export function AppHeader({ onOpenProblems, onClear, onGoHome }: AppHeaderProps)
   const isProblemsCollapsed = windowWidth < 960;
 
   const isReadOnly = activeDoc?.readOnly ?? false;
+
+  // Whether the active document is already the reference diagram for this problem
+  const isViewingReference =
+    Boolean(activeDoc?.readOnly) &&
+    activeDoc?.sourceProblemId === practiceSession?.problemId &&
+    !activeDoc?.id.startsWith('attempt-');
 
   // Close mobile menu on outside click or Escape
   useEffect(() => {
@@ -173,27 +180,41 @@ export function AppHeader({ onOpenProblems, onClear, onGoHome }: AppHeaderProps)
             {!isProblemsCollapsed && 'LLD Problems'}
           </Button>
 
-          {/* Practice Mode: Score My Solution Button (BR60) */}
+          {/* Practice Mode: Score My Solution & View Solution Buttons */}
           {practiceSession && (
-            <Button
-              id="header-btn-score"
-              data-testid="header-btn-score"
-              variant="outline"
-              disabled={isScoring}
-              icon={
-                isScoring ? (
-                  <Loader2 size={16} className="animate-spin text-primary" />
-                ) : (
-                  <Trophy size={16} className="text-primary" />
-                )
-              }
-              onClick={handleScoreMySolution}
-              className="!border-primary !text-primary hover:!bg-primary/10 shadow-sm"
-              title="Score my solution"
-              aria-label="Score my solution"
-            >
-              {isScoring ? 'Scoring…' : isCompactHeader ? 'Score' : 'Score my solution'}
-            </Button>
+            <>
+              <Button
+                id="header-btn-score"
+                data-testid="header-btn-score"
+                variant="outline"
+                disabled={isScoring}
+                icon={
+                  isScoring ? (
+                    <Loader2 size={16} className="animate-spin text-primary" />
+                  ) : (
+                    <Trophy size={16} className="text-primary" />
+                  )
+                }
+                onClick={handleScoreMySolution}
+                className="!border-primary !text-primary hover:!bg-primary/10 shadow-sm"
+                title="Score my solution"
+                aria-label="Score my solution"
+              >
+                {isScoring ? 'Scoring…' : isCompactHeader ? 'Score' : 'Score my solution'}
+              </Button>
+
+              <Button
+                id="header-btn-view-solution"
+                data-testid="header-btn-view-solution"
+                variant={isViewingReference ? 'primary' : 'secondary'}
+                icon={<Eye size={16} />}
+                onClick={() => loadReferenceDiagram(practiceSession.problemId)}
+                title="View solution"
+                aria-label="View solution"
+              >
+                {isCompactHeader ? 'Solution' : 'View solution'}
+              </Button>
+            </>
           )}
 
           <Button
@@ -252,17 +273,33 @@ export function AppHeader({ onOpenProblems, onClear, onGoHome }: AppHeaderProps)
                 </button>
 
                 {practiceSession && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      handleScoreMySolution();
-                    }}
-                    className="w-full px-3 py-2 text-left text-[14px] text-primary hover:bg-surface-2 flex items-center gap-2.5 transition-colors cursor-pointer"
-                  >
-                    <Trophy size={16} />
-                    <span>Score my solution</span>
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        handleScoreMySolution();
+                      }}
+                      className="w-full px-3 py-2 text-left text-[14px] text-primary hover:bg-surface-2 flex items-center gap-2.5 transition-colors cursor-pointer"
+                    >
+                      <Trophy size={16} />
+                      <span>Score my solution</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      id="mobile-btn-view-solution"
+                      data-testid="mobile-btn-view-solution"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        loadReferenceDiagram(practiceSession.problemId);
+                      }}
+                      className="w-full px-3 py-2 text-left text-[14px] text-text hover:bg-surface-2 flex items-center gap-2.5 transition-colors cursor-pointer"
+                    >
+                      <Eye size={16} />
+                      <span>View solution</span>
+                    </button>
+                  </>
                 )}
 
                 <div className="w-full h-px bg-border my-1" />
