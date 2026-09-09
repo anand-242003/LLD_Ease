@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Button from '../ui/Button';
+import Logo from '../ui/Logo';
 import { FolderKanban, Trash2, Trophy, Loader2, Menu, X } from 'lucide-react';
 import { useAppStore } from '../../store';
 import { useActiveDocument } from '../../store/selectors';
@@ -148,28 +149,9 @@ export function AppHeader({ onOpenProblems, onClear, onGoHome }: AppHeaderProps)
         title="Return to homepage"
         className="flex items-center gap-3 cursor-pointer bg-transparent border-none p-0"
       >
-        <div className="w-9 h-9 rounded-md bg-gradient-to-br from-primary to-cyan-400 flex items-center justify-center shadow-sm">
-          {/* 3-node connected graph mark */}
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#04292B"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="6" cy="6" r="3" fill="#04292B" />
-            <circle cx="18" cy="8" r="3" fill="#04292B" />
-            <circle cx="12" cy="18" r="3" fill="#04292B" />
-            <line x1="8.5" y1="7" x2="15.5" y2="7.5" />
-            <line x1="7.5" y1="8.5" x2="10.5" y2="15.5" />
-            <line x1="16.5" y1="10.5" x2="13.5" y2="15.5" />
-          </svg>
-        </div>
+        <Logo size={34} variant="badge" />
         <div className="flex flex-col leading-tight items-start">
-          <span className="text-[17px] font-semibold text-text tracking-tight">LLDSIM</span>
+          <span className="text-[17px] font-semibold text-text tracking-tight group-hover:text-white transition-colors">LLDSIM</span>
           <span className="text-[10px] font-semibold tracking-[0.08em] text-text-muted uppercase">
             LLD STUDIO
           </span>

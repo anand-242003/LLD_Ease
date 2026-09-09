@@ -1,3 +1,5 @@
+import Logo from '../ui/Logo';
+
 interface HomeFooterProps {
   onLaunch: () => void;
 }
@@ -64,7 +66,7 @@ export function HomeFooter({ onLaunch }: HomeFooterProps) {
 
         {/* Brand mark */}
         <div className="flex items-center gap-2 text-[13px] font-semibold text-text-muted mt-2">
-          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-primary to-cyan-400 shadow-sm" />
+          <Logo size={24} variant="badge" />
           <span>LLDSIM</span>
         </div>
 

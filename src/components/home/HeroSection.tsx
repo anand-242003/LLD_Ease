@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import Logo from '../ui/Logo';
 
 interface HeroSectionProps {
   onLaunch: () => void;
@@ -326,16 +327,7 @@ export function HeroSection({ onLaunch }: HeroSectionProps) {
 
         {/* Badge row */}
         <div data-hero-badge className="flex items-center gap-3 mb-8" style={{ opacity: 0 }}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-cyan-400 flex items-center justify-center shadow-lg">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#04292B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="6" cy="6" r="3" fill="#04292B" />
-              <circle cx="18" cy="8" r="3" fill="#04292B" />
-              <circle cx="12" cy="18" r="3" fill="#04292B" />
-              <line x1="8.5" y1="7" x2="15.5" y2="7.5" />
-              <line x1="7.5" y1="8.5" x2="10.5" y2="15.5" />
-              <line x1="16.5" y1="10.5" x2="13.5" y2="15.5" />
-            </svg>
-          </div>
+          <Logo size={40} variant="badge" />
           <span className="text-[12px] font-semibold tracking-[0.14em] text-text-muted uppercase">
             LLDSIM · LLD Studio
           </span>
