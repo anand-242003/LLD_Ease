@@ -33,17 +33,23 @@ export const useActiveProblemContext = (): Problem | null => {
   return useAppStore((state) => {
     const activeDoc = state.documents.find((d) => d.id === state.activeDocumentId);
 
-    if (activeDoc?.readOnly && activeDoc.sourceProblemId) {
-      return getProblem(activeDoc.sourceProblemId) ?? null;
-    }
-
+    // ── Priority 1: an active practice session always wins ────────────────
+    // Without this, a stale reference tab left open from a PREVIOUS problem
+    // would be `activeDoc` and the selector would return the wrong problem,
+    // causing "View reference solution" to load the old problem's solution.
     if (state.practiceSession) {
       return getProblem(state.practiceSession.problemId) ?? null;
+    }
+
+    // ── Priority 2: the active doc is a reference or attempt tab ─────────
+    if (activeDoc?.readOnly && activeDoc.sourceProblemId) {
+      return getProblem(activeDoc.sourceProblemId) ?? null;
     }
 
     return null;
   });
 };
+
 
 /**
  * Hook providing debounced lint issues (~150ms) per PRD §22.3 & Phase 29.
