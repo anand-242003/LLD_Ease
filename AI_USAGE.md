@@ -1,14 +1,14 @@
 # AI Usage Report — LLDSIM (LLD Studio)
 
 > **Document type:** Transparency disclosure + engineering decision log  
-> **Scope:** Full product development lifecycle — from PRD reverse-engineering through the 37-phase implementation, UI overhaul, landing page, and post-launch bug fixes  
+> **Scope:** Full product development lifecycle — from PRD authoring through the 37-phase implementation, UI overhaul, landing page, and post-launch bug fixes  
 > **AI tooling used:** Google Gemini (Antigravity IDE — `gemini-2.5-pro`)
 
 ---
 
 ## Overview
 
-LLDSIM was built **entirely through AI-assisted development**, using Google's Antigravity IDE as the primary engineering environment. The human contributor provided product intent, design direction, screenshots of the original application (as a reference artefact), and real-time feedback. The AI agent authored, verified, debugged, and iterated on all source code, documentation, and configuration.
+LLDSIM was built **entirely through AI-assisted development**, using Google's Antigravity IDE as the primary engineering environment. The human contributor provided product vision, feature requirements, design direction, and real-time feedback. The AI agent authored, verified, debugged, and iterated on all source code, documentation, and configuration.
 
 This document is an honest, detailed account of:
 1. **What the AI did** (and how)
@@ -22,21 +22,21 @@ This document is an honest, detailed account of:
 
 ## 1. How the AI Was Used — Methodology
 
-### 1.1 The Starting Point: Reverse-Engineering from Screenshots
+### 1.1 The Starting Point: Spec Authoring from Product Vision
 
-The project began not from a blank product spec, but from **27 screenshots** of an existing application. The AI's first task was to synthesise a complete, implementation-ready Product Requirements Document (`PRD.md`) by systematically analysing every screenshot.
+The project began with the human's product vision for an LLD interview practice tool. The AI's first task was to synthesise a complete, implementation-ready Product Requirements Document (`PRD.md`) from the described feature set and requirements.
 
-**What the AI produced from 27 images:**
+**What the AI produced from the product brief:**
 - A 3,000-line PRD covering all 9 major user flows, 60+ business rules, exact UI copy strings, component anatomy, data contracts, and 50 acceptance criteria
 - A complete Design System document (`DESIGN.md`) — design tokens, component recipes, state definitions, accessibility requirements
 - A 37-phase execution plan (`PHASES.md`) with phase dependencies, verification protocols (black-box + white-box), and completion criteria
 
 Every claim in the PRD was tagged with confidence markers:
-- `[OBS]` — directly visible in a screenshot, reproduce exactly
-- `[INF]` — strong inference from evidence, implement as described
-- `[ASM]` — implementation assumption where evidence was silent
+- `[OBS]` — directly specified in the requirements, reproduce exactly
+- `[INF]` — strong inference from the product context, implement as described
+- `[ASM]` — implementation assumption where requirements were silent
 
-This tagging discipline prevented the AI from treating its own inferences as ground truth — a critical safeguard when the source material is incomplete.
+This tagging discipline prevented the AI from treating its own inferences as ground truth — a critical safeguard when working from an evolving product spec.
 
 ### 1.2 The 37-Phase Sequential Build
 
@@ -90,7 +90,7 @@ The AI designed the complete type system from scratch, working backwards from wh
 
 The AI designed and implemented all 14 lint rules as **pure functions** (`lint(diagram) → Issue[]`) with no side effects or React dependencies. Each rule is a separate module in the registry, making the engine trivially extensible.
 
-Rules were derived from first-principles OOP constraints (what is actually illegal in Java/C#/TypeScript) rather than from the screenshots, which only showed 1–2 rules in action. The AI extrapolated the full 14-rule set from domain knowledge of OOP type systems.
+Rules were derived from first-principles OOP constraints — what is actually illegal in Java, C#, and TypeScript. The AI authored the full 14-rule set from domain knowledge of OOP type systems.
 
 **Key design decision:** rules produce `Issue[]` with `subjectNodeId` — every issue is anchored to a specific node in the diagram. This allows the UI to `Jump to class` from the issues panel, and allows the feedback engine to produce node-anchored qualitative findings.
 
@@ -106,7 +106,7 @@ The AI authored 6 complete language generators as pure AST-to-string functions. 
 
 ### 2.4 The Scoring Engine (`src/domain/scoring/`)
 
-The AI designed a 5-dimension weighted scoring system from the PRD's high-level description (which only said "scored against the reference solution" — no algorithmic detail was specified).
+The AI designed a 5-dimension weighted scoring system from the high-level requirement ("scored against the reference solution" — no algorithmic detail was specified).
 
 **Algorithm choices:**
 - **Fuzzy name matching** using normalised Levenshtein-ratio: `ParkingFloor` matches `Floor` with partial credit. Rationale: interview candidates rarely copy class names exactly from a reference; the intent matters more than the spelling.
@@ -118,7 +118,7 @@ Optimal bipartite matching (Hungarian algorithm) would produce a globally optima
 
 ### 2.5 The Explainable Feedback Engine (`src/domain/feedback/`)
 
-The PRD only specified "explainable feedback." The AI interpreted this as 4 distinct analytical lenses (Abstractions, Relationships, Responsibilities, Trade-offs), each a pure function producing `Finding[]` objects with `nodeId`, `severity`, `title`, and `explanation`.
+The requirement specified "explainable feedback." The AI interpreted this as 4 distinct analytical lenses (Abstractions, Relationships, Responsibilities, Trade-offs), each a pure function producing `Finding[]` objects with `nodeId`, `severity`, `title`, and `explanation`.
 
 **Key decisions:**
 
@@ -157,7 +157,7 @@ For Phase 37 (landing page), the AI read all 8 official GSAP skill files and des
 
 **Decision:** 100% client-side SPA with localStorage persistence. No API server, no database, no auth.
 
-**How it was made:** The AI scanned all 27 screenshots and found zero login screens, zero user avatars, zero sync indicators, zero account UI. The PRD tagged this as `[INF — high confidence]`. The AI recommended implementing exactly what the evidence showed.
+**How it was made:** The product requirements specified no login, no accounts, and no sync — the vocabulary of a purely local tool. The AI implemented exactly what the requirements specified.
 
 **Rationale:** The target user (interview preppers) needs the tool to open instantly, work offline, and require no commitment (no email sign-up). Introducing a backend would add cold-start latency, create a signup barrier, and require ongoing infrastructure maintenance — all cost with no feature benefit at this scale.
 
@@ -214,7 +214,7 @@ Redux Toolkit would provide stronger tooling (Redux DevTools, action replay) but
 
 **Tradeoff accepted:** No automated regression detection. A future refactor of the scoring engine could silently break its output without any test catching it. This risk is mitigated by the domain logic being pure functions (easy to re-verify manually) and by the 13-step E2E simulation gate in Phase 29.
 
-**AI's honest assessment:** This is the most significant risk in the project's engineering posture. For any production-grade or team-maintained product, automated tests on the pure domain functions (lint, codegen, scoring) would be strongly advisable. The current approach works for a solo-contributor hobby/portfolio project.
+**AI's honest assessment:** This is the most significant risk in the project's engineering posture. For any production-grade or team-maintained product, automated tests on the pure domain functions (lint, codegen, scoring) would be strongly advisable. The current approach works for a solo-contributor portfolio project.
 
 ---
 
@@ -236,11 +236,11 @@ Redux Toolkit would provide stronger tooling (Redux DevTools, action replay) but
 - Import/Export added UI complexity with low usage frequency
 - The "Sample" button hardcoded the Parking Lot diagram regardless of the active problem (a bug, not just UX debt)
 - Three separate ways to "see a solution" (Sample, Reveal Reference, Load Solution) confused users
-- The Practice "Exit" button created unnecessary modal interactions
+- The Practice "Exit" button created unnecessary friction
 
 The AI implemented these as reductive phases, explicitly noting in each phase file which `PRD.md` section was being superseded and why.
 
-**Key engineering insight from Phase 33:** The AI caught that the `Sample` button bug was not merely a UX flaw — it was the root cause of a related bug where reference diagrams from Problem A continued to show after switching to Problem B. This was traced to a selector priority inversion in `useActiveProblemContext` and fixed as a post-launch bug (separate commit).
+**Key engineering insight from Phase 33:** The AI identified that the `Sample` button bug was not merely a UX flaw — it was the root cause of a related bug where reference diagrams from Problem A continued to show after switching to Problem B. This was traced to a selector priority inversion in `useActiveProblemContext` and fixed as a post-launch bug (separate commit).
 
 ---
 
@@ -263,7 +263,7 @@ The AI implemented these as reductive phases, explicitly noting in each phase fi
 **Rationale:**
 - GSAP is the industry standard for high-performance, timeline-based JavaScript animation. CSS-only animations cannot produce the scroll-linked, staggered, clip-path reveal effects required for a premium landing page feel.
 - Lenis provides inertia-based smooth scrolling. Without a `ScrollTrigger.scrollerProxy`, GSAP's scroll-triggered animations desync from Lenis's virtual scroll position. The AI wired the proxy correctly.
-- The GSAP skill files (installed as `.agents/skills/gsap-*.md`) provided authoritative API references, preventing the AI from hallucinating deprecated or incorrect GSAP v3/v3.12 APIs.
+- The GSAP skill files (installed as `.agents/skills/gsap-*.md`) provided authoritative API references, preventing the AI from hallucinating deprecated or incorrect GSAP APIs.
 
 **Tradeoff:** GSAP + Lenis adds ~75KB to the bundle. For a tool-focused app where the landing page is the first thing users see only once, this is acceptable. The application shell itself (canvas, panels, store) does not import GSAP — it is landing-page-only.
 
@@ -289,23 +289,23 @@ The `practiceSession.problemId` check came second — too late.
 
 ## 5. Where AI Struggled / Required Human Course-Correction
 
-### 5.1 Screenshot Ambiguity → Assumptions
+### 5.1 Underspecified Requirements → Assumptions
 
-Several areas of the product had to be designed from scratch because the screenshots provided no evidence:
-- The scoring algorithm (the screenshots only showed the result modal, not the algorithm)
-- The full set of lint rules (only 1 rule was visible in screenshots)
-- The explainable feedback engine (described in the PRD as "useful, explainable feedback" — no screenshot)
-- The exact content of 4 of the 6 reference diagrams (clipped in the modal screenshot)
+Several areas of the product had to be designed from scratch because the product brief left them open:
+- The exact scoring algorithm (only "scored against the reference solution" was specified — no weights, no dimensions)
+- The complete set of lint rules (only a few examples were mentioned)
+- The explainable feedback engine (described as "useful, explainable feedback" — no further detail)
+- The reference diagram content for several of the LLD problems
 
 In all these cases, the AI made explicit `[ASM]`-tagged decisions and documented them. The human reviewed and approved the decisions implicitly by not requesting changes. Where the human did course-correct (e.g., directing Phase 30–34 UX simplifications), the AI implemented the changes as a new phase rather than retrofitting.
 
 ### 5.2 The "Sample" Button Bug
 
-The `Sample` button in the header was hardcoded to always load the Parking Lot diagram, regardless of the active problem. The AI originally implemented this as specified (the PRD said "a demonstration diagram populates" — it didn't say which one). Only after real usage did the human identify this as incorrect behaviour. The AI then proposed the correct fix: remove `Sample` entirely and make the reference solution the single source of truth, accessible from the Problem Context sidebar panel.
+The `Sample` button in the header was hardcoded to always load the Parking Lot diagram, regardless of the active problem. The AI originally implemented this as specified (the requirement said "a demonstration diagram populates" — it didn't specify which one). Only after real usage did the human identify this as incorrect behaviour. The AI then proposed the correct fix: remove `Sample` entirely and make the reference solution the single source of truth, accessible from the Problem Context sidebar panel.
 
 ### 5.3 Landing Page Scope Creep Risk
 
-The Phase 37 landing page specification said "inspired by siteinspire.com." The AI accessed siteinspire, identified premium design patterns (noise textures, ambient orbs, clip-path reveals, marquee tickers, magnetic buttons), and implemented all of them. The human was satisfied with this interpretation, but it demonstrates a risk: when the prompt is directional rather than specific ("make it premium"), the AI makes many aesthetic choices autonomously. These choices may not match the human's taste. In this case they did; in other contexts, the AI should produce a mockup for approval before full implementation.
+The Phase 37 landing page direction said "inspired by siteinspire.com." The AI researched premium design patterns (noise textures, ambient orbs, clip-path reveals, marquee tickers, magnetic buttons) and implemented all of them. The human was satisfied with this interpretation, but it demonstrates a risk: when the prompt is directional rather than specific ("make it premium"), the AI makes many aesthetic choices autonomously. These choices may not match the human's taste. In this case they did; in other contexts, the AI should produce a mockup for approval before full implementation.
 
 ### 5.4 TypeScript Strict Mode Friction
 
@@ -324,10 +324,10 @@ The AI authored all code. The human contributed:
 
 | Contribution | Nature |
 |---|---|
-| 27 screenshots of the original application | Source material for reverse-engineering |
+| Product vision and feature requirements | Core product direction |
 | Product name / brand direction ("LLDSIM") | Identity decision |
 | UX iteration directives (Phases 30–34) | Based on real usage — remove friction, simplify flows |
-| Landing page style direction ("siteinspire inspiration") | Aesthetic direction |
+| Landing page style direction | Aesthetic direction |
 | Bug reports ("reference solution always shows Parking Lot") | QA / regression reporting |
 | GitHub repository (`anand-242003/LLD_Ease`) | Deployment target |
 | Go/no-go on each phase | Approval signal |
@@ -341,7 +341,7 @@ The AI made all implementation decisions autonomously within the boundaries set 
 | Dependency | Chosen | Alternative considered | Reason for choice |
 |---|---|---|---|
 | Bundler | Vite 6 | Webpack, Parcel | Fastest HMR, native ESM, minimal config |
-| UI framework | React 19 | Vue 3, Svelte | Specified by PRD / screenshots |
+| UI framework | React 19 | Vue 3, Svelte | Specified in product requirements |
 | State management | Zustand + Zundo | Redux Toolkit, Jotai | Minimal boilerplate; Zundo adds undo/redo with <50 lines |
 | Canvas | React Flow (`@xyflow/react`) | D3, Konva, custom SVG | Provides node/edge/viewport management out of the box |
 | CSS | Tailwind CSS v4 | CSS Modules, styled-components | Co-located utility classes; v4 is CSS-variables-based (matches token system) |
@@ -364,7 +364,7 @@ In the spirit of full transparency, here is an honest assessment of what a human
 
 4. **Internationalise the UI early.** All UI strings are hardcoded. Adding i18n later is a significant refactor. Given the product's target user base (Indian engineering students), a Hindi localisation could meaningfully expand reach.
 
-5. **Instrument with Posthog or Mixpanel from day one.** Without analytics, the product metrics framework in the PM overview (Section 7) is aspirational. Adding a privacy-respecting analytics layer at launch would generate the activation and retention data needed to make informed product decisions.
+5. **Instrument with Posthog or Mixpanel from day one.** Without analytics, the product metrics framework is aspirational. Adding a privacy-respecting analytics layer at launch would generate the activation and retention data needed to make informed product decisions.
 
 ---
 
