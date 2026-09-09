@@ -16,7 +16,7 @@ export const libraryManagement: Problem = {
   ],
   practicePrompt:
     'Model books, copies, members, lending records, and reservations for a library.',
-  stats: { classes: 8, relationships: 7 },
+  stats: { classes: 8, relationships: 8 },
   referenceDiagram: {
     sourceProblemId: 'library-management',
     nodes: [
@@ -125,6 +125,7 @@ export const libraryManagement: Problem = {
       { id: 'lm-rel-5', type: 'ASSOCIATE', sourceId: 'lm-member', targetId: 'lm-lending' },
       { id: 'lm-rel-6', type: 'ASSOCIATE', sourceId: 'lm-lending', targetId: 'lm-book-item' },
       { id: 'lm-rel-7', type: 'AGGREGATE', sourceId: 'lm-library', targetId: 'lm-account' },
+      { id: 'lm-rel-8', type: 'ASSOCIATE', sourceId: 'lm-book-item', targetId: 'lm-book-status', label: 'status' },
     ],
     stickyNotes: [],
     inkStrokes: [],

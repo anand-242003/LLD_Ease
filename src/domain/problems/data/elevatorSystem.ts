@@ -16,7 +16,7 @@ export const elevatorSystem: Problem = {
   ],
   practicePrompt:
     'Model elevator cars, states, dispatch controller, and scheduling strategies.',
-  stats: { classes: 7, relationships: 4 },
+  stats: { classes: 7, relationships: 7 },
   referenceDiagram: {
     sourceProblemId: 'elevator-system',
     nodes: [
@@ -52,6 +52,7 @@ export const elevatorSystem: Problem = {
           { id: 'ec-1', visibility: 'private', name: 'id', type: 'int', isStatic: false, isFinal: false },
           { id: 'ec-2', visibility: 'private', name: 'currentFloor', type: 'int', isStatic: false, isFinal: false },
           { id: 'ec-3', visibility: 'private', name: 'direction', type: 'Direction', isStatic: false, isFinal: false },
+          { id: 'ec-4', visibility: 'private', name: 'status', type: 'ElevatorStatus', isStatic: false, isFinal: false },
         ],
         methods: [
           { id: 'ec-m1', visibility: 'public', name: 'moveTo', parameters: 'int floor', returns: 'void', isStatic: false, isAbstract: false },
@@ -107,6 +108,9 @@ export const elevatorSystem: Problem = {
       { id: 'elev-rel-2', type: 'ASSOCIATE', sourceId: 'elev-controller', targetId: 'elev-strategy' },
       { id: 'elev-rel-3', type: 'COMPOSE', sourceId: 'elev-car', targetId: 'elev-request' },
       { id: 'elev-rel-4', type: 'REALIZE', sourceId: 'elev-scan-strategy', targetId: 'elev-strategy' },
+      { id: 'elev-rel-5', type: 'ASSOCIATE', sourceId: 'elev-car', targetId: 'elev-direction', label: 'direction' },
+      { id: 'elev-rel-6', type: 'ASSOCIATE', sourceId: 'elev-car', targetId: 'elev-status', label: 'status' },
+      { id: 'elev-rel-7', type: 'ASSOCIATE', sourceId: 'elev-request', targetId: 'elev-direction', label: 'direction' },
     ],
     stickyNotes: [],
     inkStrokes: [],

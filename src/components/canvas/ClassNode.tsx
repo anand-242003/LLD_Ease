@@ -84,27 +84,33 @@ export const ClassNode = memo(function ClassNode({
           : 'border border-border'
       }`}
     >
-      {/* Connection Handles (DESIGN.md §5.10 - 10px teal circles at left/right mid-edge, hidden in read-only mode) */}
-      {!isReadOnly && (
-        <>
-          <Handle
-            type="target"
-            position={Position.Left}
-            id="left"
-            className={`!w-[10px] !h-[10px] !bg-primary !border-none !rounded-full !left-0 !top-1/2 !-translate-x-1/2 !-translate-y-1/2 transition-opacity duration-150 ${
-              showHandles ? '!opacity-100' : '!opacity-0 group-hover:!opacity-100'
-            }`}
-          />
-          <Handle
-            type="source"
-            position={Position.Right}
-            id="right"
-            className={`!w-[10px] !h-[10px] !bg-primary !border-none !rounded-full !right-0 !top-1/2 !translate-x-1/2 !-translate-y-1/2 transition-opacity duration-150 ${
-              showHandles ? '!opacity-100' : '!opacity-0 group-hover:!opacity-100'
-            }`}
-          />
-        </>
-      )}
+      {/* Connection Handles (DESIGN.md §5.10 - 10px teal circles at left/right mid-edge, hidden visually in read-only mode) */}
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="left"
+        isConnectable={!isReadOnly}
+        className={`!w-[10px] !h-[10px] !bg-primary !border-none !rounded-full !left-0 !top-1/2 !-translate-x-1/2 !-translate-y-1/2 transition-opacity duration-150 ${
+          showHandles
+            ? '!opacity-100 !pointer-events-auto'
+            : isReadOnly
+            ? '!opacity-0 !pointer-events-none'
+            : '!opacity-0 group-hover:!opacity-100'
+        }`}
+      />
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="right"
+        isConnectable={!isReadOnly}
+        className={`!w-[10px] !h-[10px] !bg-primary !border-none !rounded-full !right-0 !top-1/2 !translate-x-1/2 !-translate-y-1/2 transition-opacity duration-150 ${
+          showHandles
+            ? '!opacity-100 !pointer-events-auto'
+            : isReadOnly
+            ? '!opacity-0 !pointer-events-none'
+            : '!opacity-0 group-hover:!opacity-100'
+        }`}
+      />
 
       {/* Inner Node Container */}
       <div className="rounded-[calc(var(--r-md)-1px)] overflow-hidden">

@@ -16,7 +16,7 @@ export const splitwise: Problem = {
   ],
   practicePrompt:
     'Model users, groups, expenses, and pluggable split strategies to track and settle balances.',
-  stats: { classes: 10, relationships: 9 },
+  stats: { classes: 10, relationships: 10 },
   referenceDiagram: {
     sourceProblemId: 'splitwise',
     nodes: [
@@ -103,6 +103,7 @@ export const splitwise: Problem = {
         attributes: [
           { id: 'e-1', visibility: 'private', name: 'id', type: 'String', isStatic: false, isFinal: false },
           { id: 'e-2', visibility: 'private', name: 'amount', type: 'double', isStatic: false, isFinal: false },
+          { id: 'e-3', visibility: 'private', name: 'splitType', type: 'SplitType', isStatic: false, isFinal: false },
         ],
         methods: [
           { id: 'e-m1', visibility: 'public', name: 'validate', parameters: '', returns: 'boolean', isStatic: false, isAbstract: false },
@@ -140,6 +141,7 @@ export const splitwise: Problem = {
       { id: 'sw-rel-7', type: 'COMPOSE', sourceId: 'sw-expense', targetId: 'sw-split' },
       { id: 'sw-rel-8', type: 'ASSOCIATE', sourceId: 'sw-expense', targetId: 'sw-strategy' },
       { id: 'sw-rel-9', type: 'REALIZE', sourceId: 'sw-equal-strategy', targetId: 'sw-strategy' },
+      { id: 'sw-rel-10', type: 'ASSOCIATE', sourceId: 'sw-expense', targetId: 'sw-split-type', label: 'splitType' },
     ],
     stickyNotes: [],
     inkStrokes: [],

@@ -16,7 +16,7 @@ export const vendingMachine: Problem = {
   ],
   practicePrompt:
     'Model a coin-operated vending machine using the State design pattern.',
-  stats: { classes: 8, relationships: 6 },
+  stats: { classes: 8, relationships: 8 },
   referenceDiagram: {
     sourceProblemId: 'vending-machine',
     nodes: [
@@ -127,6 +127,8 @@ export const vendingMachine: Problem = {
       { id: 'vm-rel-4', type: 'REALIZE', sourceId: 'vm-idle-state', targetId: 'vm-state' },
       { id: 'vm-rel-5', type: 'REALIZE', sourceId: 'vm-has-money-state', targetId: 'vm-state' },
       { id: 'vm-rel-6', type: 'REALIZE', sourceId: 'vm-dispensing-state', targetId: 'vm-state' },
+      { id: 'vm-rel-7', type: 'DEPEND', sourceId: 'vm-machine', targetId: 'vm-coin', label: 'accepts' },
+      { id: 'vm-rel-8', type: 'DEPEND', sourceId: 'vm-state', targetId: 'vm-coin' },
     ],
     stickyNotes: [],
     inkStrokes: [],

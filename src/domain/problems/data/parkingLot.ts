@@ -15,7 +15,7 @@ export const parkingLot: Problem = {
   ],
   practicePrompt:
     'Model the classes & relationships for a multi-floor parking lot system with vehicle allocation, tickets, and payments.',
-  stats: { classes: 15, relationships: 13 },
+  stats: { classes: 15, relationships: 15 },
   referenceDiagram: {
     sourceProblemId: 'parking-lot',
     nodes: [
@@ -41,7 +41,7 @@ export const parkingLot: Problem = {
           { id: 'st-3', visibility: 'public', name: 'MOTORCYCLE', type: '', isStatic: false, isFinal: false },
         ],
         methods: [],
-        position: { x: 320, y: 50 },
+        position: { x: 520, y: 50 },
       },
       {
         id: 'node-vehicle',
@@ -62,7 +62,7 @@ export const parkingLot: Problem = {
         name: 'Car',
         attributes: [],
         methods: [],
-        position: { x: 20, y: 400 },
+        position: { x: 20, y: 440 },
       },
       {
         id: 'node-bike',
@@ -70,7 +70,7 @@ export const parkingLot: Problem = {
         name: 'Bike',
         attributes: [],
         methods: [],
-        position: { x: 140, y: 400 },
+        position: { x: 160, y: 440 },
       },
       {
         id: 'node-truck',
@@ -78,7 +78,7 @@ export const parkingLot: Problem = {
         name: 'Truck',
         attributes: [],
         methods: [],
-        position: { x: 260, y: 400 },
+        position: { x: 300, y: 440 },
       },
       {
         id: 'node-parking-spot',
@@ -93,7 +93,7 @@ export const parkingLot: Problem = {
           { id: 'ps-m1', visibility: 'public', name: 'assign', parameters: 'Vehicle v', returns: 'boolean', isStatic: false, isAbstract: false },
           { id: 'ps-m2', visibility: 'public', name: 'free', parameters: '', returns: 'void', isStatic: false, isAbstract: false },
         ],
-        position: { x: 420, y: 220 },
+        position: { x: 520, y: 220 },
       },
       {
         id: 'node-parking-floor',
@@ -105,7 +105,7 @@ export const parkingLot: Problem = {
         methods: [
           { id: 'pf-m1', visibility: 'public', name: 'findSpot', parameters: 'SpotType type', returns: 'ParkingSpot', isStatic: false, isAbstract: false },
         ],
-        position: { x: 420, y: 420 },
+        position: { x: 520, y: 440 },
       },
       {
         id: 'node-parking-lot',
@@ -118,7 +118,7 @@ export const parkingLot: Problem = {
           { id: 'pl-m1', visibility: 'public', name: 'parkVehicle', parameters: 'Vehicle v', returns: 'Ticket', isStatic: false, isAbstract: false },
           { id: 'pl-m2', visibility: 'public', name: 'unpark', parameters: 'Ticket t', returns: 'double', isStatic: false, isAbstract: false },
         ],
-        position: { x: 700, y: 220 },
+        position: { x: 780, y: 220 },
       },
       {
         id: 'node-ticket',
@@ -132,7 +132,7 @@ export const parkingLot: Problem = {
         methods: [
           { id: 't-m1', visibility: 'public', name: 'close', parameters: 'long exitTime', returns: 'double', isStatic: false, isAbstract: false },
         ],
-        position: { x: 700, y: 440 },
+        position: { x: 780, y: 440 },
       },
       {
         id: 'node-fee-strategy',
@@ -142,7 +142,7 @@ export const parkingLot: Problem = {
         methods: [
           { id: 'fs-m1', visibility: 'public', name: 'calculate', parameters: 'Ticket t', returns: 'double', isStatic: false, isAbstract: true },
         ],
-        position: { x: 960, y: 220 },
+        position: { x: 1040, y: 220 },
       },
       {
         id: 'node-hourly-fee',
@@ -152,7 +152,7 @@ export const parkingLot: Problem = {
         methods: [
           { id: 'hfs-m1', visibility: 'public', name: 'calculate', parameters: 'Ticket t', returns: 'double', isStatic: false, isAbstract: false },
         ],
-        position: { x: 960, y: 400 },
+        position: { x: 1040, y: 440 },
       },
       {
         id: 'node-payment-strategy',
@@ -162,7 +162,7 @@ export const parkingLot: Problem = {
         methods: [
           { id: 'pay-m1', visibility: 'public', name: 'pay', parameters: 'double amount', returns: 'boolean', isStatic: false, isAbstract: true },
         ],
-        position: { x: 1220, y: 220 },
+        position: { x: 1300, y: 220 },
       },
       {
         id: 'node-card-payment',
@@ -172,7 +172,7 @@ export const parkingLot: Problem = {
         methods: [
           { id: 'cp-m1', visibility: 'public', name: 'pay', parameters: 'double amount', returns: 'boolean', isStatic: false, isAbstract: false },
         ],
-        position: { x: 1160, y: 400 },
+        position: { x: 1300, y: 440 },
       },
       {
         id: 'node-cash-payment',
@@ -182,7 +182,7 @@ export const parkingLot: Problem = {
         methods: [
           { id: 'cash-m1', visibility: 'public', name: 'pay', parameters: 'double amount', returns: 'boolean', isStatic: false, isAbstract: false },
         ],
-        position: { x: 1300, y: 400 },
+        position: { x: 1520, y: 440 },
       },
     ],
     edges: [
@@ -199,6 +199,8 @@ export const parkingLot: Problem = {
       { id: 'pl-rel-11', type: 'ASSOCIATE', sourceId: 'node-parking-lot', targetId: 'node-payment-strategy', label: 'paymentStrategy' },
       { id: 'pl-rel-12', type: 'REALIZE', sourceId: 'node-card-payment', targetId: 'node-payment-strategy' },
       { id: 'pl-rel-13', type: 'REALIZE', sourceId: 'node-cash-payment', targetId: 'node-payment-strategy' },
+      { id: 'pl-rel-14', type: 'ASSOCIATE', sourceId: 'node-vehicle', targetId: 'node-vehicle-type', label: 'type' },
+      { id: 'pl-rel-15', type: 'ASSOCIATE', sourceId: 'node-parking-spot', targetId: 'node-spot-type', label: 'type' },
     ],
     stickyNotes: [],
     inkStrokes: [],

@@ -16,7 +16,7 @@ export const chessGame: Problem = {
     'A move history supports replay',
   ],
   practicePrompt: 'Model the pieces, board, and turn-based rules engine for a chess game.',
-  stats: { classes: 12, relationships: 12 },
+  stats: { classes: 12, relationships: 13 },
   referenceDiagram: {
     sourceProblemId: 'chess-game',
     nodes: [
@@ -365,6 +365,13 @@ export const chessGame: Problem = {
         sourceId: 'cg-move',
         targetId: 'cg-piece',
         label: 'piece',
+      },
+      {
+        id: 'cg-rel-13',
+        type: 'ASSOCIATE',
+        sourceId: 'cg-player',
+        targetId: 'cg-color',
+        label: 'color',
       },
     ],
     stickyNotes: [],
