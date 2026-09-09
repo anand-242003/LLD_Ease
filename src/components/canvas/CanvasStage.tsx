@@ -194,7 +194,7 @@ function CanvasInternal() {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         connectionMode={ConnectionMode.Loose}
-        nodesDraggable={!isReadOnly}
+        nodesDraggable={true}
         nodesConnectable={!isReadOnly}
         elementsSelectable={true}
         onNodesChange={onNodesChange}

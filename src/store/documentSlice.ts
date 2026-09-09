@@ -260,7 +260,8 @@ export const createDocumentSlice: StateCreator<
   updateNode: (nodeId: Id, patch: Partial<ClassNode>, docId?: Id) => {
     const { isReadOnly, activeDocumentId } = get();
     const targetId = docId ?? activeDocumentId;
-    if (isReadOnly(targetId)) return;
+    const isPositionOnly = Object.keys(patch).length === 1 && 'position' in patch;
+    if (isReadOnly(targetId) && !isPositionOnly) return;
 
     set((state) => ({
       documents: state.documents.map((doc) => {

@@ -90,8 +90,17 @@ export const createWorkspaceSlice: StateCreator<
     const { documents, setActiveDocument } = get();
 
     // BR12: Idempotency check — if already loaded, focus existing tab
-    const existing = documents.find((d) => d.sourceProblemId === problemId);
+    const existing = documents.find(
+      (d) => d.sourceProblemId === problemId && !d.id.startsWith('attempt-') && d.id !== 'my-design'
+    );
     if (existing) {
+      if (existing.readOnly) {
+        set((state) => ({
+          documents: state.documents.map((d) =>
+            d.id === existing.id ? { ...d, readOnly: false } : d
+          ),
+        }));
+      }
       setActiveDocument(existing.id);
       get().setActiveModal(null);
       get().requestFitView();
@@ -108,7 +117,7 @@ export const createWorkspaceSlice: StateCreator<
     const refDoc: Diagram = {
       id: nanoid(),
       title: `${problem.title} — Reference`,
-      readOnly: true,
+      readOnly: false,
       sourceProblemId: problem.id,
       nodes: JSON.parse(JSON.stringify(problem.referenceDiagram.nodes)),
       edges: JSON.parse(JSON.stringify(problem.referenceDiagram.edges)),

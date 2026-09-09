@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lock, X } from 'lucide-react';
+import { Lock, Unlock, X } from 'lucide-react';
 import { Diagram } from '../../domain/types';
 import { useAppStore } from '../../store';
 
@@ -12,6 +12,7 @@ export function DocumentTab({ document, isActive }: DocumentTabProps) {
   const setActiveDocument = useAppStore((state) => state.setActiveDocument);
   const setSelectedElement = useAppStore((state) => state.setSelectedElement);
   const removeDocument = useAppStore((state) => state.removeDocument);
+  const updateDocument = useAppStore((state) => state.updateDocument);
 
   const isMyDesign = document.id === 'my-design';
 
@@ -25,6 +26,11 @@ export function DocumentTab({ document, isActive }: DocumentTabProps) {
   const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation();
     removeDocument(document.id);
+  };
+
+  const handleToggleLock = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    updateDocument(document.id, { readOnly: !document.readOnly });
   };
 
   return (
@@ -47,26 +53,40 @@ export function DocumentTab({ document, isActive }: DocumentTabProps) {
           : 'bg-transparent text-text-muted hover:text-text hover:bg-surface-2'
       }`}
     >
-      {/* Lock glyph if read-only (PRD §10.6) */}
-      {document.readOnly && (
-        <Lock size={12} className="text-text-muted shrink-0" aria-label="Read-only" />
+      {/* Lock / Unlock Toggle button */}
+      {!isMyDesign && (
+        <button
+          type="button"
+          onClick={handleToggleLock}
+          title={
+            document.readOnly
+              ? 'Diagram is locked (read-only). Click to unlock and edit.'
+              : 'Diagram is unlocked. Click to lock.'
+          }
+          aria-label={document.readOnly ? 'Unlock diagram' : 'Lock diagram'}
+          className={`p-1 -ml-1 rounded transition-colors shrink-0 ${
+            document.readOnly
+              ? 'text-amber-400 hover:text-amber-300 hover:bg-surface-3'
+              : 'text-text-muted hover:text-text hover:bg-surface-3'
+          }`}
+        >
+          {document.readOnly ? <Lock size={12} /> : <Unlock size={12} />}
+        </button>
       )}
 
       {/* Tab title */}
       <span className="truncate max-w-[220px]">{document.title}</span>
 
       {/* PAST badge for attempt tabs or REF badge for reference tabs */}
-      {document.readOnly && (
-        document.id.startsWith('attempt-') ? (
-          <span className="text-[10px] font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-400 leading-none">
-            PAST
-          </span>
-        ) : (
-          <span className="text-[10px] font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-primary-soft text-primary leading-none">
-            REF
-          </span>
-        )
-      )}
+      {document.id.startsWith('attempt-') ? (
+        <span className="text-[10px] font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-400 leading-none">
+          PAST
+        </span>
+      ) : document.sourceProblemId && !isMyDesign ? (
+        <span className="text-[10px] font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-primary-soft text-primary leading-none">
+          REF
+        </span>
+      ) : null}
 
       {/* Close button × (never rendered on My Design per BR01) */}
       {!isMyDesign && (
