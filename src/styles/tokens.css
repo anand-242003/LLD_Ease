@@ -1,0 +1,91 @@
+:root {
+  color-scheme: dark;
+
+  /* ── Surfaces (dark, low-chroma stack, each one step lighter) ── */
+  --canvas:        #0A0A0B;
+  --bg:             #0E0E10;
+  --surface-1:      #131316;   /* header, sidebar, right panel      */
+  --surface-2:      #17171A;   /* palette rows, inputs, issue rows  */
+  --surface-3:      #1C1C20;   /* node body, cards, modal           */
+  --surface-4:      #242429;   /* node header band, active tab      */
+  --surface-hover:  #2A2A2F;   /* generic hover lightening          */
+
+  /* ── Borders ── */
+  --border:         #2A2A2F;
+  --border-strong:  #35353C;
+  --grid-dot:       #26262B;
+
+  /* ── Text ── */
+  --text:           #E9E9EC;
+  --text-muted:     #8A8A93;
+  --text-faint:     #5E5E67;
+
+  /* ── Primary (teal) — the ONLY "active/selected/primary" color ── */
+  --primary:        #22C7C7;
+  --primary-hover:  #2ADADA;
+  --primary-fg:     #04292B;   /* text/icon ON a teal fill          */
+  --primary-soft:   rgba(34,199,199,0.12);
+  --primary-ring:   rgba(34,199,199,0.35);
+
+  /* ── Semantic ── */
+  --success:        #34D399;
+  --success-soft:   rgba(52,211,153,0.12);
+  --warning:        #F59E0B;
+  --warning-soft:   rgba(245,158,11,0.12);
+  --danger:         #EF4444;
+  --danger-soft:    rgba(239,68,68,0.12);
+  --accent:         #FBBF24;   /* donation button only               */
+
+  /* ── Class-kind colors (palette dots + node stereotypes) ── */
+  --kind-class:      #9CA3AF;
+  --kind-abstract:   #F59E0B;
+  --kind-interface:  #7DD3FC;
+  --kind-enum:       #2DD4BF;
+  --kind-record:     #34D399;
+
+  /* ── Ink palette (5) ── */
+  --ink-cyan:    #22D3EE;
+  --ink-red:     #F43F5E;   /* exact — printed in-product */
+  --ink-amber:   #FBBF24;
+  --ink-purple:  #A78BFA;
+  --ink-white:   #F8FAFC;
+
+  /* ── Sticky-note palette (7) ── */
+  --sticky-white:   #F8FAFC;
+  --sticky-red:     #FCA5A5;
+  --sticky-orange:  #FDBA74;
+  --sticky-green:   #86EFAC;
+  --sticky-teal:    #5EEAD4;
+  --sticky-purple:  #C4B5FD;
+  --sticky-pink:    #F9A8D4;
+  --sticky-default: #FDE047;
+
+  /* ── Typography ── */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* ── Spacing scale (4px base) ── */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+
+  /* ── Radius scale ── */
+  --r-sm: 6px;  --r-md: 10px; --r-lg: 14px; --r-xl: 16px; --r-full: 9999px;
+
+  /* ── Elevation (shadows — used sparingly, see §4) ── */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.35);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.45);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.55);
+
+  /* ── Motion ── */
+  --ease-out:      cubic-bezier(0.2, 0, 0, 1);
+  --dur-fast:      120ms;
+  --dur-base:      180ms;
+  --dur-modal:     220ms;
+
+  /* ── Layout constants ── */
+  --header-h:      56px;
+  --palette-w:     265px;
+  --panel-w:       510px;
+  --panel-w-lg:    420px;  /* laptop breakpoint, §26 */
+  --tabbar-h:      44px;
+}

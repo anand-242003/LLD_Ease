@@ -1,0 +1,153 @@
+@import '@xyflow/react/dist/style.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── React Flow Dark Theme Overrides (DESIGN.md §10.4) ── */
+.react-flow {
+  --xy-background-color: var(--canvas);
+  --xy-node-background-color: var(--surface-3);
+  --xy-node-border-color: var(--border);
+  --xy-node-border-radius: var(--r-md);
+  --xy-node-color: var(--text);
+  --xy-edge-stroke: var(--border-strong);
+  --xy-edge-stroke-selected: var(--primary);
+  --xy-handle-background-color: var(--primary);
+  --xy-selection-background-color: var(--primary-soft);
+  --xy-selection-border-color: var(--primary);
+  --xy-controls-button-background-color: var(--surface-2);
+  --xy-controls-button-background-color-hover: var(--surface-3);
+  --xy-controls-button-color: var(--text);
+  --xy-controls-button-color-hover: var(--text);
+  --xy-controls-button-border-color: var(--border);
+  --xy-controls-box-shadow: var(--shadow-sm);
+  background-color: var(--canvas);
+}
+
+.react-flow__node-classNode,
+.react-flow__node-default {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  text-align: inherit;
+  width: auto;
+}
+
+.react-flow__controls {
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.react-flow__controls-button {
+  background-color: var(--surface-2) !important;
+  border-bottom: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  fill: var(--text) !important;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.react-flow__controls-button:hover {
+  background-color: var(--surface-3) !important;
+}
+
+.react-flow__controls-button svg {
+  fill: currentColor !important;
+}
+
+/* ── Dark Mode Native Controls Resets (DESIGN.md §10) ── */
+select {
+  background-color: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  outline: none;
+}
+
+select option {
+  background-color: var(--surface-2);
+  color: var(--text);
+}
+
+input, textarea {
+  background-color: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-faint);
+}
+
+/* ── Custom Dark Scrollbar (DESIGN.md §10) ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-4);
+  border-radius: var(--r-sm);
+  border: 2px solid var(--surface-1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--surface-hover);
+}
+
+/* ── Selection Styling ── */
+::selection {
+  background-color: var(--primary-soft);
+  color: var(--text);
+}
+
+/* ── Focus Rings (DESIGN.md §5.1 & §8) ── */
+:focus-visible {
+  outline: 2px solid var(--primary) !important;
+  outline-offset: 2px !important;
+}
+
+/* ── Touch Targets on Coarse Pointers (PRD §18.5 & DESIGN.md §8) ── */
+@media (pointer: coarse) {
+  button, a, input, select, textarea, [role="button"], [role="tab"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ── Reduced Motion (DESIGN.md §7) ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
