@@ -1,38 +1,34 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { ReactFlowProvider } from '@xyflow/react';
 import AppShell from './components/layout/AppShell';
 import HomePage from './components/home/HomePage';
 
-const HAS_VISITED_APP_KEY = 'classforge.hasVisitedApp';
-
-function readHasVisitedApp(): boolean {
-  if (typeof window === 'undefined') return false;
-  try {
-    return window.localStorage.getItem(HAS_VISITED_APP_KEY) === 'true';
-  } catch {
-    return false;
-  }
-}
-
 /**
- * Phase 37 — a pre-app marketing homepage sits in front of the workspace.
- * This is a pure client-side view toggle, not a router (PRD.md §7.1 keeps
- * the app itself single-route) — switching views never touches the app's
- * own localStorage-persisted state (documents/profiles/attempts).
+ * Main App entry point.
+ * Defaults to the marketing homepage / landing page on root load or page refresh.
+ * Switching to the workspace ('app') is session-driven so refreshing always returns
+ * to the landing page as requested by user.
  */
 export function App() {
-  const [view, setView] = useState<'home' | 'app'>(() => (readHasVisitedApp() ? 'app' : 'home'));
+  const [view, setView] = useState<'home' | 'app'>('home');
+
+  useEffect(() => {
+    // Clean up any legacy localStorage key that previously forced redirect to app
+    try {
+      window.localStorage.removeItem('classforge.hasVisitedApp');
+    } catch {
+      // ignore
+    }
+  }, []);
 
   const enterApp = () => {
-    try {
-      window.localStorage.setItem(HAS_VISITED_APP_KEY, 'true');
-    } catch {
-      // Best-effort only — still enter the app even if storage is blocked.
-    }
     setView('app');
   };
 
-  const goHome = () => setView('home');
+  const goHome = () => {
+    setView('home');
+  };
 
   if (view === 'home') {
     return <HomePage onLaunch={enterApp} />;

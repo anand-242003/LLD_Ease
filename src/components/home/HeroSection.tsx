@@ -429,21 +429,21 @@ export function HeroSection({ onLaunch }: HeroSectionProps) {
 
         {/* ── Interactive UML Diagram preview ──────────────────────────────────
             Layout in a 700×300 coordinate space:
-              ParkingLot:         left=0,   top=30,   w=190  → center-x≈95,  center-y≈75
-              FeeStrategy:        right=0,  top=30,   w=195  → center-x≈605, center-y≈75
-              HourlyFeeStrategy:  right=0,  bottom=0, w=195  → center-x≈605, center-y≈225
+              ParkingLot:         left=0,   top=30,   w=190, h≈124  → center-x≈95,    center-y=92
+              FeeStrategy:        right=0,  top=44,   w=195, h≈96   → center-x=602.5, center-y=92
+              HourlyFeeStrategy:  right=0,  bottom=0, w=195, h≈96   → center-x=602.5, top=204, center-y=252
 
-            Edge 1 (association):  M 190 75 L 505 75    (ParkingLot right-edge → FeeStrategy left-edge)
-            Edge 2 (realization):  M 605 118 L 605 215  (FeeStrategy bottom → HourlyFeeStrategy top)
+            Edge 1 (association):  M 190 92 L 505 92      (ParkingLot right-edge → FeeStrategy left-edge)
+            Edge 2 (realization):  M 602.5 152 L 602.5 204 (Hollow triangle at FeeStrategy bottom 140-152)
         ─────────────────────────────────────────────────────────────────────── */}
         <div
           className="relative w-full max-w-[700px] select-none"
           style={{ height: '300px' }}
           aria-hidden="true"
         >
-          {/* SVG edges layer */}
+          {/* SVG edges layer — z-10 ensures connection handles & arrowheads render crisply over node borders */}
           <svg
-            className="absolute inset-0 w-full h-full pointer-events-none"
+            className="absolute inset-0 w-full h-full pointer-events-none z-10"
             viewBox="0 0 700 300"
             preserveAspectRatio="xMidYMid meet"
           >
@@ -455,8 +455,8 @@ export function HeroSection({ onLaunch }: HeroSectionProps) {
               </linearGradient>
               {/* Vertical gradient (FeeStrategy → HourlyFeeStrategy) */}
               <linearGradient id="eg2" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#22C7C7" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#7DD3FC" stopOpacity="0.5" />
+                <stop offset="0%" stopColor="#7DD3FC" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#22C7C7" stopOpacity="0.5" />
               </linearGradient>
               {/* Glow filter */}
               <filter id="eglow" x="-50%" y="-50%" width="200%" height="200%">
@@ -466,71 +466,70 @@ export function HeroSection({ onLaunch }: HeroSectionProps) {
             </defs>
 
             {/* Ghost depth lines */}
-            <path d="M 190 75 L 505 75" fill="none" stroke="rgba(34,199,199,0.07)" strokeWidth="7" strokeLinecap="round" />
-            <path d="M 605 118 L 605 215" fill="none" stroke="rgba(125,211,252,0.07)" strokeWidth="7" strokeLinecap="round" />
+            <path d="M 190 92 L 505 92" fill="none" stroke="rgba(34,199,199,0.07)" strokeWidth="7" strokeLinecap="round" />
+            <path d="M 602.5 152 L 602.5 204" fill="none" stroke="rgba(125,211,252,0.07)" strokeWidth="7" strokeLinecap="round" />
 
             {/* Edge 1: ParkingLot → FeeStrategy (solid association) */}
             <path
               data-hero-edge="1"
-              d="M 190 75 L 505 75"
+              d="M 190 92 L 505 92"
               fill="none"
               stroke="url(#eg1)"
               strokeWidth="1.8"
               strokeLinecap="round"
               filter="url(#eglow)"
             />
-            {/* Arrowhead at FeeStrategy */}
+            {/* Open arrowhead cleanly touching FeeStrategy left border (x=505, y=92) */}
             <path
-              d="M 499 69 L 511 75 L 499 81"
+              d="M 495 86 L 505 92 L 495 98"
               fill="none"
               stroke="#22C7C7"
-              strokeWidth="1.6"
+              strokeWidth="1.8"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
 
-            {/* Edge 2: FeeStrategy → HourlyFeeStrategy (dashed realization) */}
+            {/* Edge 2: HourlyFeeStrategy implements FeeStrategy (UML realization: dashed line with hollow triangle at interface) */}
+            <polygon
+              points="602.5,140 596,152 609,152"
+              fill="var(--surface-3)"
+              stroke="#7DD3FC"
+              strokeWidth="1.8"
+              strokeLinejoin="round"
+            />
             <path
               data-hero-edge="2"
-              d="M 605 118 L 605 215"
+              d="M 602.5 152 L 602.5 204"
               fill="none"
               stroke="url(#eg2)"
               strokeWidth="1.8"
+              strokeDasharray="6 4"
               strokeLinecap="round"
               filter="url(#eglow)"
             />
-            {/* Open triangle arrowhead pointing down */}
-            <path
-              d="M 598 209 L 605 222 L 612 209"
-              fill="none"
-              stroke="#7DD3FC"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
 
             {/* Traveling particles on edge 1 */}
-            <circle data-edge-dot r="3.5" cx="190" cy="75" fill="#22C7C7" opacity="0" />
-            <circle data-edge-dot r="2" cx="190" cy="75" fill="#7DD3FC" opacity="0" />
+            <circle data-edge-dot r="3.5" cx="190" cy="92" fill="#22C7C7" opacity="0" />
+            <circle data-edge-dot r="2" cx="190" cy="92" fill="#7DD3FC" opacity="0" />
 
             {/* Connection handle dots */}
-            <circle cx="190" cy="75" r="4.5" fill="#22C7C7" opacity="0.65" />
-            <circle cx="505" cy="75" r="4.5" fill="#22C7C7" opacity="0.65" />
-            <circle cx="605" cy="215" r="4.5" fill="#7DD3FC" opacity="0.55" />
+            <circle cx="190" cy="92" r="4.5" fill="#22C7C7" opacity="0.8" />
+            <circle cx="505" cy="92" r="4.5" fill="#22C7C7" opacity="0.8" />
+            <circle cx="602.5" cy="204" r="4.5" fill="#7DD3FC" opacity="0.8" />
 
             {/* Animated pulse rings */}
-            <circle cx="190" cy="75" r="4" fill="none" stroke="#22C7C7" strokeWidth="1.5" opacity="0.5">
+            <circle cx="190" cy="92" r="4" fill="none" stroke="#22C7C7" strokeWidth="1.5" opacity="0.5">
               <animate attributeName="r" values="4;16;4" dur="2.6s" repeatCount="indefinite" />
               <animate attributeName="opacity" values="0.5;0;0.5" dur="2.6s" repeatCount="indefinite" />
             </circle>
-            <circle cx="605" cy="215" r="4" fill="none" stroke="#7DD3FC" strokeWidth="1.5" opacity="0.4">
+            <circle cx="602.5" cy="204" r="4" fill="none" stroke="#7DD3FC" strokeWidth="1.5" opacity="0.4">
               <animate attributeName="r" values="4;16;4" dur="3s" repeatCount="indefinite" begin="0.8s" />
               <animate attributeName="opacity" values="0.4;0;0.4" dur="3s" repeatCount="indefinite" begin="0.8s" />
             </circle>
 
             {/* Relationship labels */}
-            <text x="347" y="65" textAnchor="middle" fill="rgba(34,199,199,0.4)" fontSize="10" fontFamily="monospace">uses</text>
-            <text x="618" y="172" textAnchor="start" fill="rgba(125,211,252,0.38)" fontSize="10" fontFamily="monospace">implements</text>
+            <text x="347" y="80" textAnchor="middle" fill="rgba(34,199,199,0.55)" fontSize="10" fontFamily="monospace">uses</text>
+            <text x="618" y="180" textAnchor="start" fill="rgba(125,211,252,0.55)" fontSize="10" fontFamily="monospace">implements</text>
           </svg>
 
           {/* ── Node: ParkingLot ──────────────────────────────────────────── */}
@@ -569,7 +568,7 @@ export function HeroSection({ onLaunch }: HeroSectionProps) {
           {/* ── Node: «interface» FeeStrategy ─────────────────────────────── */}
           <div
             data-hero-node
-            className="absolute right-0 top-[30px] w-[195px] rounded-[10px] overflow-hidden cursor-pointer"
+            className="absolute right-0 top-[44px] w-[195px] rounded-[10px] overflow-hidden cursor-pointer"
             style={{
               background: 'var(--surface-3)',
               border: '1px solid var(--border)',
